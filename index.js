@@ -1,25 +1,26 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
+const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
-global.session = {};
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/petshop');
 
-var app = express();
-
-var port = process.env.PORT || 3370;
+const app = express();
+const session = {};
+const port = process.env.PORT || 3370;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 
 app.use((req, res, next) => {
-  var err = new Error('404 - Not Found');
+  const err = new Error('404 - Not Found');
   err.status = 404;
   next(err);
 });
 
 app.use((err, req, res, next) => {
-  var status = err.status || 500;
+  const status = err.status || 500;
   res.status(status).send(err.message);
 });
 
