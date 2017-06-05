@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/petshop');
 mongoose.Promise = Promise;
 
-const petRoutes = require('./routes/pets');
 const userRoutes = require('./routes/users');
+const petRoutes = require('./routes/pets');
 
 const app = express();
 const session = {};
@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 
-app.use('/', userRoutes(session));
+app.use('/', userRoutes);
 app.use('/pets', petRoutes);
 
 app.use((req, res, next) => {
