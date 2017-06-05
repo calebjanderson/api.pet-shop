@@ -5,6 +5,9 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/petshop');
 
+const petRoutes = require('../routes/pets');
+const userRoutes = require('../routes/users');
+
 const app = express();
 const session = {};
 const port = process.env.PORT || 3370;
@@ -12,6 +15,9 @@ const port = process.env.PORT || 3370;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
+
+app.use('/', userRoutes(session));
+app.use('/pets', petRoutes);
 
 app.use((req, res, next) => {
   const err = new Error('404 - Not Found');
