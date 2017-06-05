@@ -19,6 +19,7 @@
   "homepage": "https://github.com/jkrusinski/api.pet-shop#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "express": "^4.15.3",
     "expresss": "0.0.0",
     "mongoose": "^4.10.4",
     "morgan": "^1.8.2",

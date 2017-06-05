@@ -5,8 +5,8 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/petshop');
 
-const petRoutes = require('../routes/pets');
-const userRoutes = require('../routes/users');
+const petRoutes = require('./routes/pets');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const session = {};
