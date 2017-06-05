@@ -1,52 +1,56 @@
 const express = require('express');
 const User = require('../models/User.js');
 const uuid = require('uuid/v4');
-const _ = require('lodash');
+const { addSession } = require('../session.js');
 const router = express.Router();
 
-module.exports = Session => {
+router.post('/signup', (req, res, next) => {
+  const { username, password } = req.body;
 
-  router.post('/signup', (req, res, next) => {
-    const { username, password } = req.body;
+  const newUser = {
+    username: username,
+    password: password
+  };
 
-    const newUser = {
-      username: username,
-      password: password,
-      apiToken: uuid()
-    };
+  User.create(newUser)
 
-    User.create(newUser)
-
-    .then(user => {
-      res.json(_.pick(user, ['username', 'apiToken', '_id']));
-    })
-
-    .catch(err => {
-      next(err);
+  .then(user => {
+    res.json({
+      username: user.username,
+      id: user._id,
+      apiToken: addSession(user._id);
     });
+  })
+
+  .catch(err => {
+    next(err);
   });
+});
 
-  router.post('/signin', (req, res, next) => {
-    const { username, password } = req.body;
+router.post('/signin', (req, res, next) => {
+  const { username, password } = req.body;
 
-    User.findOne({ username: username })
+  User.findOne({ username: username })
 
-    .then(user => {
-      if (!user) {
-        return next(new Error('User does not exist.'));
-      }
+  .then(user => {
+    if (!user) {
+      return next(new Error('User does not exist.'));
+    }
 
-      if (user.password !== password) {
-        return next(new Error('Invalid password.'));
-      }
+    if (user.password !== password) {
+      return next(new Error('Invalid password.'));
+    }
 
-      res.json(_.pick(user, ['username', 'apiToken', '_id']));
-    })
-
-    .catch(err => {
-      next(err);
+    res.json({
+      username: user.username,
+      id: user._id,
+      apiToken: addSession(user._id);
     });
-  });
+  })
 
-  return router;
-};
+  .catch(err => {
+    next(err);
+  });
+});
+
+module.exports = router;
