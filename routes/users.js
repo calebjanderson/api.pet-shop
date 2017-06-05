@@ -7,8 +7,7 @@ const router = express.Router();
 module.exports = Session => {
 
   router.post('/signup', (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    const { username, password } = req.body;
 
     const newUser = {
       username: username,
@@ -28,7 +27,25 @@ module.exports = Session => {
   });
 
   router.post('/signin', (req, res, next) => {
+    const { username, password } = req.body;
 
+    User.findOne({ username: username })
+
+    .then(user => {
+      if (!user) {
+        return next(new Error('User does not exist.'));
+      }
+
+      if (user.password !== password) {
+        return next(new Error('Invalid password.'));
+      }
+
+      res.json(_.pick(user, ['username', 'apiToken', '_id']));
+    })
+
+    .catch(err => {
+      next(err);
+    });
   });
 
   return router;
