@@ -1,5 +1,5 @@
 const express = require('express');
-const Pet = require('../db/Pet.js');
+const Pet = require('../models/Pet.js');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
