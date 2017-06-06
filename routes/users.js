@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/User.js');
 const uuid = require('uuid/v4');
-const { addSession } = require('../session.js');
+const { addSession } = require('../session');
 const router = express.Router();
 
 router.post('/signup', (req, res, next) => {
@@ -18,7 +18,7 @@ router.post('/signup', (req, res, next) => {
     res.json({
       username: user.username,
       id: user._id,
-      apiToken: addSession(user._id);
+      apiToken: addSession(user._id)
     });
   })
 
@@ -44,7 +44,7 @@ router.post('/signin', (req, res, next) => {
     res.json({
       username: user.username,
       id: user._id,
-      apiToken: addSession(user._id);
+      apiToken: addSession(user._id)
     });
   })
 
