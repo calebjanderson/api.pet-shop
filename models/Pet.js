@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-sequence');
 const Schema = mongoose.Schema;
 
 const petSchema = Schema({
@@ -24,5 +25,7 @@ const petSchema = Schema({
   }]
 
 });
+
+petSchema.plugin(autoIncrement, { inc_field: 'id' });
 
 module.exports = mongoose.model('pet', petSchema);

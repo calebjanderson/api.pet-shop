@@ -17,8 +17,8 @@ router.post('/signup', (req, res, next) => {
   .then(user => {
     res.json({
       username: user.username,
-      id: user._id,
-      apiToken: addSession(user._id)
+      id: user._id.toString(),
+      apiToken: addSession(user._id.toString())
     });
   })
 
@@ -43,8 +43,8 @@ router.post('/signin', (req, res, next) => {
 
     res.json({
       username: user.username,
-      id: user._id,
-      apiToken: addSession(user._id)
+      id: user._id.toString(),
+      apiToken: addSession(user._id.toString())
     });
   })
 

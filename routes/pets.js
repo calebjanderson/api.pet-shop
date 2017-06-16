@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
   Pet.find({})
 
   .then(pets => {
-    res.json(pets);
+    res.json(pets.map((pet) => _.pick(pet, ['id', 'name', 'species', 'likes', 'imageUrl'])));
   })
 
   .catch(err => {
@@ -32,13 +32,9 @@ router.post('/', protect, (req, res, next) => {
 
 router.post('/:id/like', protect, (req, res, next) => {
 
-  Pet.findById(req.params.id)
+  Pet.findOneAndUpdate({ id: req.params.id }, { $addToSet: { likes: req.userId }})
 
   .then(pet => {
-    if (!pet.likes.includes(req.userId)) {
-      pet.likes.push(req.userId);
-      pet.save();
-    }
     res.sendStatus(201);
   })
 
