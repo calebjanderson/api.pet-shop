@@ -14,7 +14,7 @@ exports.addSession = (userId) => {
   }
 };
 
-exports.protect = (req, res, next)  => {
+exports.protect = (req, res, next) => {
   const userId = sessionMap[req.get('Authorization')];
 
   if (!userId) {
