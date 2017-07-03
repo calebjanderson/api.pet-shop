@@ -3,9 +3,9 @@ const _ = require('lodash');
 
 const getIdAndIncrement = () => {
   return new Promise((fulfill, reject) => {
-    const id = db.get('counter').value();
+    const id = db.get('userCounter').value();
     db
-      .set('counter', id + 1)
+      .set('userCounter', id + 1)
       .write()
       .then(() => {
         fulfill(id);
@@ -30,24 +30,15 @@ const create = function(user) {
 
     if (cleanUser.username && cleanUser.password) {
 
-      findOne(cleanUser.username)
-        .then((userSearch) => {
-
-          if (userSearch) {
-            reject(new Error('User already exists'));
-          } else {
-
-            getIdAndIncrement()
-              .then((id) => {
-                const newUser = _.assign({}, cleanUser, { id: id });
-                db.get('users').push(newUser).write().then(() => {
-                  fulfill(id);
-                });
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          }
+      getIdAndIncrement()
+        .then((id) => {
+          const newUser = _.assign({}, cleanUser, { id: id });
+          db.get('users').push(newUser).write().then(() => {
+            fulfill(newUser);
+          });
+        })
+        .catch((err) => {
+          reject(err);
         });
 
     } else {
