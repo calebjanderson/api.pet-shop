@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
 
   .catch(err => {
     next(err);
-  })
+  });
 });
 
 router.post('/', protect, (req, res, next) => {
