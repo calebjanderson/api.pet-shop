@@ -38,11 +38,3 @@ exports.create = async user => {
 
   return userId;
 };
-
-(async function() {
-  try {
-    await exports.create({ username: 'bike' }).then(console.log);
-  } catch (e) {
-    console.log(e);
-  }
-})();
