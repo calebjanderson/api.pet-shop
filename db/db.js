@@ -1,17 +1,37 @@
-const db = require('lowdb')('db/data.json', {
-  storage: require('lowdb/lib/storages/file-async')
-});
+const fs = require('fs');
 
-db
-  .defaults({
-    pets: [],
-    users: [],
-    petCounter: 1,
-    userCounter: 1
-  })
-  .write()
-  .then(() => {
-    console.log('Database initialized');
+exports.pullPets = () => {
+  return new Promise((fulfill, reject) => {
+
   });
+};
 
-module.exports = db;
+exports.writePets = (pets) => {
+  return new Promise((fulfill, reject) => {
+
+  });
+};
+
+exports.pullUsers = () => {
+  return new Promise((fulfill, reject) => {
+
+  });
+};
+
+exports.writeUsers = (users) => {
+  return new Promise((fulfill, reject) => {
+
+  });
+};
+
+exports.pullCounters = () => {
+  return new Promise((fulfill, reject) => {
+
+  });
+};
+
+exports.writeCounters = (counters) => {
+  return new Promise((fulfill, reject) => {
+
+  });
+};
