@@ -1,37 +1,28 @@
 const fs = require('fs');
+const path = require('path');
 
-exports.pullPets = () => {
+exports.read = (name) => {
   return new Promise((fulfill, reject) => {
-
+    const dbPath = path.join(__dirname, `./data/${name}.json`);
+    fs.readFile(dbPath, 'utf8', (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        fulfill(data);
+      }
+    });
   });
 };
 
-exports.writePets = (pets) => {
+exports.write = (name, data) => {
   return new Promise((fulfill, reject) => {
-
-  });
-};
-
-exports.pullUsers = () => {
-  return new Promise((fulfill, reject) => {
-
-  });
-};
-
-exports.writeUsers = (users) => {
-  return new Promise((fulfill, reject) => {
-
-  });
-};
-
-exports.pullCounters = () => {
-  return new Promise((fulfill, reject) => {
-
-  });
-};
-
-exports.writeCounters = (counters) => {
-  return new Promise((fulfill, reject) => {
-
+    const dbPath = path.join(__dirname, `./data/${name}.json`);
+    fs.writeFile(dbPath, data, 'utf8', (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        fulfill();
+      }
+    });
   });
 };
