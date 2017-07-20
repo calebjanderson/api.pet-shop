@@ -8,7 +8,7 @@ exports.read = (name) => {
       if (err) {
         reject(err);
       } else {
-        fulfill(data);
+        fulfill(JSON.parse(data));
       }
     });
   });
@@ -17,7 +17,7 @@ exports.read = (name) => {
 exports.write = (name, data) => {
   return new Promise((fulfill, reject) => {
     const dbPath = path.join(__dirname, `./data/${name}.json`);
-    fs.writeFile(dbPath, data, 'utf8', (err) => {
+    fs.writeFile(dbPath, JSON.stringify(data), 'utf8', (err) => {
       if (err) {
         reject(err);
       } else {
