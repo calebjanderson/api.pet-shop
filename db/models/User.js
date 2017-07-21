@@ -16,7 +16,7 @@ exports.findOne = async username => {
   const user = _.find(users, { username: username });
 
   if (!user) {
-    throw newError('User not fount.', 404);
+    throw newError('User not found.', 404);
   }
 
   return user;
