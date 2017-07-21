@@ -1,4 +1,5 @@
 const db = require('../db');
+const { newError } = require('../../util');
 const _ = require('lodash');
 
 const getPetIdAndIncrement = async () => {
@@ -21,7 +22,7 @@ exports.create = async pet => {
   ]);
 
   if (!pet.name || !pet.species || !pet.imageUrl) {
-    throw new Error('Not a valid pet object');
+    throw newError('Not a valid pet object.', 400);
   }
 
   pet.id = petId;

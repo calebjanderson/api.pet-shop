@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../db/models/User.js');
 const uuid = require('uuid/v4');
-const { addSession } = require('../session');
+const { addSession, newError } = require('../util');
 const router = express.Router();
 
 router.post('/signup', async (req, res, next) => {
@@ -31,9 +31,7 @@ router.post('/signin', async (req, res, next) => {
     const user = await User.findOne(username);
 
     if (user.password !== password) {
-      const error = new Error('Invalid password.');
-      error.status = 401;
-      throw error;
+      throw newError('Invalid password.', 401);
     }
 
     res.json({

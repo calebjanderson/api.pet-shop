@@ -24,3 +24,9 @@ exports.protect = (req, res, next) => {
     next();
   }
 };
+
+exports.newError = (message, status) => {
+  const error = new Error(message);
+  error.status = status || 500;
+  return error;
+};

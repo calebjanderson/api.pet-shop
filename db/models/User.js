@@ -1,4 +1,5 @@
 const db = require('../db');
+const { newError } = require('../../util');
 const _ = require('lodash');
 
 const getUserIdAndIncrement = async () => {
@@ -15,9 +16,7 @@ exports.findOne = async username => {
   const user = _.find(users, { username: username });
 
   if (!user) {
-    const error = new Error('User not found.');
-    error.status = 404;
-    throw error;
+    throw newError('User not fount.', 404);
   }
 
   return user;
@@ -30,15 +29,11 @@ exports.create = async user => {
   ]);
 
   if (!user.username || !user.password) {
-    const error = new Error('Not a valid user object.');
-    error.status = 400;
-    throw error;
+    throw newError('Not a valid user object', 400);
   }
 
   if (_.find(users, { username: user.username })) {
-    const error = new Error('User already exists');
-    error.status = 400;
-    throw error;
+    throw newError('User already exists.', 400);
   }
 
   user.id = userId;
