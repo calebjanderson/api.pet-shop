@@ -1,5 +1,5 @@
 const db = require('../db');
-const { newError } = require('../util');
+const { newError } = require('../../util');
 const _ = require('lodash');
 
 const getPetIdAndIncrement = async () => {
