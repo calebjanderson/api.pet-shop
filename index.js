@@ -2,12 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+const { newError } = require('./util');
 
 const userRoutes = require('./routes/users');
 const petRoutes = require('./routes/pets');
 
 const app = express();
-const session = {};
 const port = process.env.PORT || 3370;
 
 app.use(cors());
@@ -19,9 +19,7 @@ app.use('/', userRoutes);
 app.use('/pets', petRoutes);
 
 app.use((req, res, next) => {
-  const err = new Error('404 - Not Found');
-  err.status = 404;
-  next(err);
+  next(newError('404 - Not Found', 404));
 });
 
 app.use((err, req, res, next) => {
