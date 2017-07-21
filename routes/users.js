@@ -1,10 +1,10 @@
 const express = require('express');
-const User = require('../models/User.js');
+const User = require('../db/models/User.js');
 const uuid = require('uuid/v4');
 const { addSession } = require('../session');
 const router = express.Router();
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
   const { username, password } = req.body;
 
   const newUser = {
@@ -12,45 +12,38 @@ router.post('/signup', (req, res, next) => {
     password: password
   };
 
-  User.create(newUser)
-
-  .then(user => {
+  try {
+    const id = await User.create(newUser);
     res.json({
-      username: user.username,
-      id: user._id.toString(),
-      apiToken: addSession(user._id.toString())
+      username: username,
+      id: id,
+      apiToken: addSession(id)
     });
-  })
-
-  .catch(err => {
-    next(err);
-  });
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.post('/signin', (req, res, next) => {
+router.post('/signin', async (req, res, next) => {
   const { username, password } = req.body;
 
-  User.findOne({ username: username })
-
-  .then(user => {
-    if (!user) {
-      return next(new Error('User does not exist.'));
-    }
+  try {
+    const user = await User.findOne(username);
 
     if (user.password !== password) {
-      return next(new Error('Invalid password.'));
+      const error = new Error('Invalid password.');
+      error.status = 401;
+      throw error;
     }
 
     res.json({
       username: user.username,
-      id: user._id.toString(),
-      apiToken: addSession(user._id.toString())
+      id: user.id,
+      apiToken: addSession(user.id)
     });
-  })
-
-  .catch(err => {
-    next(err);
-  });
+  } catch (e) {
+    next(e);
+  }
 });
 
 module.exports = router;

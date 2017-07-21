@@ -5,11 +5,17 @@
  */
 
 module.exports = {
+  "parser": "babel-eslint",
+  "rules": {
+    "strict": 0
+  },
   env: {
     'es6': true
   },
   parserOptions: {
+    ecmaVersion: 7,
     sourceType: 'module',
+    codeFrame: false,
     ecmaFeatures: {
       'jsx': true
     }

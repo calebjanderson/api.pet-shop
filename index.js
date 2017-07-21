@@ -3,10 +3,6 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/petshop');
-mongoose.Promise = Promise;
-
 const userRoutes = require('./routes/users');
 const petRoutes = require('./routes/pets');
 

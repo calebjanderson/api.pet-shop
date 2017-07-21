@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "watch": "nodemon index.js",
+    "watch": "nodemon --inspect index.js --ignore db/data/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,16 +21,20 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "cors": "^2.8.3",
+    "diskdb": "^0.1.17",
     "express": "^4.15.3",
     "expresss": "0.0.0",
     "lodash": "^4.17.4",
-    "mongoose": "^4.10.4",
-    "mongoose-sequence": "^3.2.0",
+    "lowdb": "^0.16.2",
     "morgan": "^1.8.2",
     "nodemon": "^1.11.0",
     "uuid": "^3.0.1"
   },
   "engines": {
     "node": "7.9.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.2.0"
   }
 }
