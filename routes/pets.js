@@ -1,7 +1,7 @@
 const express = require('express');
 const Pet = require('../db/models/Pet.js');
 const _ = require('lodash');
-const { protect } = require('../session');
+const { protect } = require('../util');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
