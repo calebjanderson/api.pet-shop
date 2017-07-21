@@ -1,7 +1,7 @@
 const db = require('../db');
 const _ = require('lodash');
 
-const getIdAndIncrement = async () => {
+const getUserIdAndIncrement = async () => {
   const counters = await db.read('counters');
   const userId = counters.userId++;
 
@@ -18,10 +18,8 @@ exports.findOne = async id => {
 exports.create = async user => {
   const [users, userId] = await Promise.all([
     db.read('users'),
-    getIdAndIncrement()
+    getUserIdAndIncrement()
   ]);
-
-  console.log(user);
 
   if (!user.username || !user.password) {
     throw new Error('Not a valid user object');
@@ -32,7 +30,7 @@ exports.create = async user => {
   }
 
   user.id = userId;
-  users.push(user);
+  users.push(_.pick(user, ['username', 'password', 'id']));
 
   await db.write('users', users);
 
