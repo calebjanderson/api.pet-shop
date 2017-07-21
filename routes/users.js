@@ -4,7 +4,7 @@ const uuid = require('uuid/v4');
 const { addSession } = require('../session');
 const router = express.Router();
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
   const { username, password } = req.body;
 
   const newUser = {
@@ -12,52 +12,38 @@ router.post('/signup', (req, res, next) => {
     password: password
   };
 
-  User.findOne(username)
-    .then((userSearch) => {
-
-      if (userSearch) {
-        next(new Error('User already exists'));
-      } else {
-
-        return User.create(newUser)
-          .then(user => {
-            res.json({
-              username: user.username,
-              id: user.id,
-              apiToken: addSession(user.id)
-            });
-          });
-      }
-    })
-
-    .catch(err => {
-      next(err);
+  try {
+    const id = await User.create(newUser);
+    res.json({
+      username: username,
+      id: id,
+      apiToken: addSession(id)
     });
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.post('/signin', (req, res, next) => {
+router.post('/signin', async (req, res, next) => {
   const { username, password } = req.body;
 
-  User.findOne(username)
-    .then(user => {
-      if (!user) {
-        return next(new Error('User does not exist.'));
-      }
+  try {
+    const user = await User.findOne(username);
 
-      if (user.password !== password) {
-        return next(new Error('Invalid password.'));
-      }
+    if (user.password !== password) {
+      const error = new Error('Invalid password.');
+      error.status = 401;
+      throw error;
+    }
 
-      res.json({
-        username: user.username,
-        id: user.id,
-        apiToken: addSession(user.id)
-      });
-    })
-
-    .catch(err => {
-      next(err);
+    res.json({
+      username: user.username,
+      id: user.id,
+      apiToken: addSession(user.id)
     });
+  } catch (e) {
+    next(e);
+  }
 });
 
 module.exports = router;
