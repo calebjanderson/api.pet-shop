@@ -10,9 +10,17 @@ const getUserIdAndIncrement = async () => {
   return userId;
 };
 
-exports.findOne = async id => {
+exports.findOne = async username => {
   const users = await db.read('users');
-  return _.find(users, { id: id });
+  const user = _.find(users, { username: username });
+
+  if (!user) {
+    const error = new Error('User not found.');
+    error.status = 404;
+    throw error;
+  }
+
+  return user;
 };
 
 exports.create = async user => {
@@ -22,11 +30,15 @@ exports.create = async user => {
   ]);
 
   if (!user.username || !user.password) {
-    throw new Error('Not a valid user object');
+    const error = new Error('Not a valid user object.');
+    error.status = 400;
+    throw error;
   }
 
   if (_.find(users, { username: user.username })) {
-    throw new Error('User already exists');
+    const error = new Error('User already exists');
+    error.status = 400;
+    throw error;
   }
 
   user.id = userId;
